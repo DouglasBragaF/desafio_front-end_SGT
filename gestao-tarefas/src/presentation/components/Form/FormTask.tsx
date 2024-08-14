@@ -1,19 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './FormTask.module.css';
+import { Tarefa } from '../../../domain/types/TarefaTypes';
 import { CreateTarefaType } from '../../../domain/types/CreateTarefaType';
 import { TarefaService } from '../../../application/services/TarefaService';
 
-const FormTask = () => {
+interface FormTaskProps {
+  tarefa?: Tarefa; // Prop para receber a tarefa a ser editada
+}
+
+const FormTask: React.FC<FormTaskProps> = ({ tarefa }) => {
   const [taskData, setTaskData] = useState<CreateTarefaType>({
-    titulo: '',
-    descricao: '',
-    dataVencimento: '',
+    titulo: tarefa?.titulo || '',
+    descricao: tarefa?.descricao || '',
+    dataVencimento: tarefa?.dataVencimento?.toString().substring(0, 10) || '', // Formatando a data para o input date
   });
+
+  useEffect(() => {
+    if (tarefa) {
+      setTaskData({
+        titulo: tarefa.titulo,
+        descricao: tarefa.descricao,
+        dataVencimento: tarefa.dataVencimento?.toString().substring(0, 10) || '',
+      });
+    }
+  }, [tarefa]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
 
-    setTaskData((prevData) => ({
+    setTaskData((prevData: any) => ({
       ...prevData,
       [id]: value,
     }));
@@ -22,15 +37,18 @@ const FormTask = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const taskDataToSubmit = {
-      ...taskData,
-    };
-
     try {
-      await TarefaService.create(taskDataToSubmit);
-      console.log('Tarefa registrada:', taskDataToSubmit);
+      if (tarefa) {
+        // Atualizar a tarefa existente
+        await TarefaService.update({ ...tarefa, ...taskData });
+        console.log('Tarefa atualizada:', taskData);
+      } else {
+        // Criar uma nova tarefa
+        await TarefaService.create(taskData);
+        console.log('Tarefa registrada:', taskData);
+      }
     } catch (error) {
-      console.error('Erro ao criar a tarefa:', error);
+      console.error('Erro ao salvar a tarefa:', error);
     }
 
     setTaskData({
@@ -44,7 +62,7 @@ const FormTask = () => {
     <div className={styles.mainContainer}>
       <div className={styles.container}>
         <div className={styles.title}>
-          <h1>Registrar Tarefa</h1>
+          <h1>{tarefa ? 'Editar Tarefa' : 'Registrar Tarefa'}</h1>
         </div>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.row}>
@@ -87,7 +105,9 @@ const FormTask = () => {
             </div>
           </div>
           <div className={styles.botoes}>
-            <button type="submit" className={styles.saveButton}>Registrar</button>
+            <button type="submit" className={styles.saveButton}>
+              {tarefa ? 'Salvar Alterações' : 'Registrar'}
+            </button>
           </div>
         </form>
       </div>

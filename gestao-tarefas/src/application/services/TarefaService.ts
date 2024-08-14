@@ -40,6 +40,17 @@ export const TarefaService = {
     }
   },
 
+  async update(tarefa: CreateTarefaType) {
+    try {
+      const response = await apiClient.put(`/Tarefa/${tarefa.id}`, tarefa);
+      console.log("retorno apiClient put:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao atualizar a tarefa:", error);
+      throw error;
+    }
+  },
+
   async deleteTarefa(id: number) {
     try {
       const response = await apiClient.delete(`/Tarefa/${id}`);

@@ -4,6 +4,7 @@
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; /* Adiciona rolagem horizontal se necessário */
 }
 
 .taskList h2 {
@@ -23,11 +24,13 @@
   border-bottom: 2px solid #ddd;
   background-color: #f0f0f0;
   color: #333;
+  flex-wrap: wrap; /* Permite quebra de linha se necessário */
 }
 
 .listHeader span {
   flex: 1;
   text-align: center;
+  min-width: 100px; /* Garante que cada coluna tenha uma largura mínima */
 }
 
 .listItem {
@@ -36,11 +39,13 @@
   padding: 10px 0;
   border-bottom: 1px solid #ddd;
   font-size: 16px;
+  flex-wrap: wrap; /* Permite quebra de linha se necessário */
 }
 
 .listItem span {
   flex: 1;
   text-align: center;
+  min-width: 100px; /* Garante que cada coluna tenha uma largura mínima */
 }
 
 .listItem:nth-child(odd) {
@@ -68,4 +73,24 @@
 
 .icon:hover {
   fill: #000;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .listHeader,
+  .listItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .listHeader span,
+  .listItem span {
+    text-align: left;
+    width: 100%; /* Expande as colunas para 100% da largura em telas pequenas */
+    min-width: auto; /* Remove a largura mínima para permitir a expansão total */
+  }
+
+  .actionIcons {
+    justify-content: flex-start; /* Alinha os ícones à esquerda em telas pequenas */
+  }
 }

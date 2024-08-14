@@ -3,7 +3,11 @@ import styles from './TaskList.module.css';
 import { StatusTarefa, Tarefa } from '../../../domain/types/TarefaTypes';
 import { TarefaService } from '../../../application/services/TarefaService';
 
-const TaskList = () => {
+interface TaskListProps {
+  onEdit: (tarefa: Tarefa) => void;
+}
+
+const TaskList = ({onEdit}: TaskListProps) => {
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +34,7 @@ const TaskList = () => {
     };
 
     fetchTarefas();
-  }, []);
+  }, [tarefas]);
 
   const handleStatusChange = async (id: number, newStatus: StatusTarefa) => {
     try {
@@ -50,7 +54,10 @@ const TaskList = () => {
   };
 
   const handleEdit = (id: number) => {
-    console.log('Editar tarefa:', id);
+    const tarefaToEdit = tarefas.find(tarefa => tarefa.id === id);
+    if (tarefaToEdit) {
+      onEdit(tarefaToEdit);
+    } 
   }
 
   const handleDelete = async (id: number) => {
