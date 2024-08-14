@@ -1,21 +1,43 @@
 import { useState } from 'react';
 import styles from './FormTask.module.css';
+import { CreateTarefaType } from '../../../domain/types/CreateTarefaType';
+import { TarefaService } from '../../../application/services/TarefaService';
 
 const FormTask = () => {
-  const [titulo, setTitulo] = useState('');
-  const [descricao, setDescricao] = useState('');
-  const [dataVencimento, setDataVencimento] = useState('');
-  // const [status, setStatus] = useState('Pendente');
+  const [taskData, setTaskData] = useState<CreateTarefaType>({
+    titulo: '',
+    descricao: '',
+    dataVencimento: '',
+  });
 
-  const handleSubmit = (event: any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+
+    setTaskData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const taskData = {
-      titulo,
-      descricao,
-      dataVencimento,
-      status,
+
+    const taskDataToSubmit = {
+      ...taskData,
     };
-    console.log('Tarefa registrada:', taskData);
+
+    try {
+      await TarefaService.create(taskDataToSubmit);
+      console.log('Tarefa registrada:', taskDataToSubmit);
+    } catch (error) {
+      console.error('Erro ao criar a tarefa:', error);
+    }
+
+    setTaskData({
+      titulo: '',
+      descricao: '',
+      dataVencimento: '',
+    });
   };
 
   return (
@@ -31,8 +53,8 @@ const FormTask = () => {
               <input
                 type="text"
                 id="titulo"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
+                value={taskData.titulo}
+                onChange={handleInputChange}
                 className={styles.input}
                 maxLength={255}
                 required
@@ -44,8 +66,8 @@ const FormTask = () => {
               <label htmlFor="descricao">Descrição</label>
               <textarea
                 id="descricao"
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
+                value={taskData.descricao}
+                onChange={handleInputChange}
                 className={styles.input}
                 required
               />
@@ -57,29 +79,13 @@ const FormTask = () => {
               <input
                 type="date"
                 id="dataVencimento"
-                value={dataVencimento}
-                onChange={(e) => setDataVencimento(e.target.value)}
+                value={taskData.dataVencimento}
+                onChange={handleInputChange}
                 className={`${styles.input} ${styles.data}`}
                 required
               />
             </div>
           </div>
-          {/* <div className={styles.row}>
-            <div className={styles.col}>
-              <label htmlFor="status">Status</label>
-              <select
-                id="status"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className={styles.selectCliente}
-                required
-              >
-                <option value="Pendente">Pendente</option>
-                <option value="EmProgresso">Em Progresso</option>
-                <option value="Concluida">Concluída</option>
-              </select>
-            </div>
-          </div> */}
           <div className={styles.botoes}>
             <button type="submit" className={styles.saveButton}>Registrar</button>
           </div>

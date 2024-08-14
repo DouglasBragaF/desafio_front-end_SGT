@@ -1,12 +1,5 @@
-export type CreateTarefaType = {
+export interface CreateTarefaType {
   titulo: string;
   descricao: string;
-  dataVencimento?: Date | null;
-  status: StatusTarefa;
+  dataVencimento: string;
 };
-
-export enum StatusTarefa {
-  Pendente = "Pendente",
-  EmProgresso = "EmProgresso",
-  Concluida = "Concluida"
-}
