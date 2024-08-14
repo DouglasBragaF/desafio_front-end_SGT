@@ -26,4 +26,28 @@ export const TarefaService = {
       throw error;
     }
   },
+
+  async updateStatus(id: number, newStatus: number) {
+    try {
+      const response = await apiClient.put(`/Tarefa/${id}/status`, {
+        status: newStatus,
+      });
+      console.log("retorno apiClient put:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao atualizar o status da tarefa:", error);
+      throw error;
+    }
+  },
+
+  async deleteTarefa(id: number) {
+    try {
+      const response = await apiClient.delete(`/Tarefa/${id}`);
+      console.log("retorno apiClient delete:", response.status);
+      return response.status;
+    } catch (error) {
+      console.error("Erro ao excluir a tarefa:", error);
+      throw error;
+    }
+  }
 };

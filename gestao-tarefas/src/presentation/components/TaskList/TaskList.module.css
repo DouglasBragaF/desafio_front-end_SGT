@@ -1,5 +1,5 @@
 .taskList {
-  border: 3px solid pink;
+  border: 2px solid #ffcccb;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 8px;
@@ -10,19 +10,62 @@
   margin-bottom: 20px;
   font-size: 24px;
   color: #333;
+  text-align: center;
+  font-weight: bold;
 }
 
-.taskList ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.taskList li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+.listHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-weight: bold;
   font-size: 18px;
+  border-bottom: 2px solid #ddd;
+  background-color: #f0f0f0;
+  color: #333;
 }
 
-.taskList li:last-child {
+.listHeader span {
+  flex: 1;
+  text-align: center;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+}
+
+.listItem span {
+  flex: 1;
+  text-align: center;
+}
+
+.listItem:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.listItem:last-child {
   border-bottom: none;
+}
+
+/* Estilização dos ícones de ação */
+.actionIcons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.icon {
+  cursor: pointer;
+  fill: #666;
+  width: 24px;
+  height: 24px;
+  transition: fill 0.2s ease;
+}
+
+.icon:hover {
+  fill: #000;
 }
