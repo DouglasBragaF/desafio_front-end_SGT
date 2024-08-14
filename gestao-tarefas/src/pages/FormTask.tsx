@@ -5,7 +5,7 @@ const FormTask = () => {
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [dataVencimento, setDataVencimento] = useState('');
-  const [status, setStatus] = useState('Pendente');
+  // const [status, setStatus] = useState('Pendente');
 
   const handleSubmit = (event: any) => {
     event.preventDefault();

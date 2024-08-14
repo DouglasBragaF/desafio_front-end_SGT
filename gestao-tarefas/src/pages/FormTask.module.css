@@ -1,12 +1,7 @@
-.input, 
-.col input, 
-.col textarea, 
-.selectObservacao, 
-.selectCliente {
+.input {
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #c5c4c4;
-  z-index: 0;
   flex: 2;
 }
 
@@ -24,7 +19,6 @@
 }
 
 .mainContainer {
-
   border: 3px solid blue;
   display: flex;
   width: 50%;
@@ -32,8 +26,8 @@
   margin: 20px auto;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-height: 90vh; /* Limita a altura máxima para garantir que caiba na tela */
-  overflow-y: auto; /* Permite rolagem vertical se necessário */
+  max-height: 90vh;
+  overflow-y: auto;
   justify-content: center;
   align-items: center;
 }
@@ -41,10 +35,8 @@
 .container {
   border: 3px solid red;
   background-color: white;
-  
   width: 90%;
-  /* padding: 30px; */
-  box-sizing: border-box; /* Garante que padding seja incluído na largura total */
+  box-sizing: border-box;
 }
 
 .title {
@@ -68,7 +60,7 @@
   border-radius: 0 0 15px 15px;
   box-shadow: 0px 10px 10px 1px rgba(0, 0, 0, 0.568);
   margin-bottom: 20px;
-  overflow-y: auto; /* Permite rolagem interna se o conteúdo exceder o espaço */
+  overflow-y: auto;
 }
 
 .row {
@@ -89,8 +81,7 @@
   font-weight: 500;
 }
 
-.saveButton,
-.button {
+.saveButton {
   background-color: #01A998;
   color: white;
   border: none;
@@ -104,8 +95,7 @@
   justify-content: center;
 }
 
-.saveButton:hover,
-.button:hover {
+.saveButton:hover {
   background-color: #01655b;
 }
 
@@ -136,10 +126,6 @@
   .title {
     padding: 25px;
     font-size: 25px;
-  }
-
-  .lapis {
-    width: 25px;
   }
 }
 
