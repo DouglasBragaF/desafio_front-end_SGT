@@ -1,0 +1,8 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 90vh; /* Usando height ao invés de min-height para consistência */
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Evita a rolagem */
+}
