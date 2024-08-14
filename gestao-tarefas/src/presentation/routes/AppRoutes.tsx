@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
-import FormTask from '../pages/FormTask';
+import Home from '../pages/Home';
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<FormTask />} />
+      <Route path="/" element={<Home />} />
     </Routes>
   );
 };

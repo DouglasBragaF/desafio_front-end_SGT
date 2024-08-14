@@ -8,9 +8,9 @@ const MenuHeader = () => {
     <header className="header">
       <div className="header-container">
         <h1>Gestão de Tarefas</h1>
-        <button className="logout-button" onClick={handleLogout}>
+        {/* <button className="logout-button" onClick={handleLogout}>
           Logout
-        </button>
+        </button> */}
       </div>
     </header>
   );

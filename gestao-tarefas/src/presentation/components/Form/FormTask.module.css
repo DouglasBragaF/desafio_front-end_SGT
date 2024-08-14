@@ -5,9 +5,9 @@
   flex: 2;
 }
 
-.data {
+/* .data {
   z-index: -1;
-}
+} */
 
 .toastError {
   background-color: #f44336 !important;
