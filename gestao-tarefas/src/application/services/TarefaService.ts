@@ -14,4 +14,16 @@ export const TarefaService = {
       throw error;
     }
   },
+
+
+  async getAll() {
+    try {
+      const response = await apiClient.get("/Tarefa");
+      console.log("retorno apiClient get:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar as tarefas:", error);
+      throw error;
+    }
+  },
 };
