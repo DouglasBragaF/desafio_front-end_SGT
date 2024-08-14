@@ -1,8 +1,10 @@
 .app {
+  border: 3px solid green;
   display: flex;
   flex-direction: column;
-  height: 90vh; /* Usando height ao invés de min-height para consistência */
+  height: 100vh;
+  width: 100vw;
   align-items: center;
   justify-content: center;
-  overflow: hidden; /* Evita a rolagem */
+  box-sizing: border-box; /* Inclui a borda dentro das dimensões */
 }
