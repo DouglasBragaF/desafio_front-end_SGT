@@ -8,8 +8,8 @@ import DeleteIcon from '../Icon/DeleteIcon';
 
 interface TaskListProps {
   onEdit: (tarefa: Tarefa) => void;
-  reload: boolean;
-  onReload: () => void;
+  // reload: boolean;
+  // onReload: () => void;
 }
 
 const TaskList = ({ onEdit }: TaskListProps) => {

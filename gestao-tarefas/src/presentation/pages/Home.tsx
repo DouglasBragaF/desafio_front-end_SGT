@@ -9,7 +9,7 @@ const Home = () => {
   document.title = 'Gestão de Tarefas';
 
   const [selectedTask, setSelectedTask] = useState<Tarefa | undefined>(undefined);
-  const [reloadTaskList, setReloadTaskList] = useState(false);
+  // const [reloadTaskList, setReloadTaskList] = useState(false);
 
   const handleEdit = (tarefa: Tarefa) => {
     setSelectedTask(tarefa);
@@ -17,7 +17,7 @@ const Home = () => {
 
   const handleTaskUpdated = () => {
      // Sinaliza para recarregar a lista de tarefas
-    setReloadTaskList(true);
+    // setReloadTaskList(true);
      // Limpa a tarefa selecionada após atualização
     setSelectedTask(undefined);
   };
@@ -27,7 +27,7 @@ const Home = () => {
       <MenuHeader />
       <main className={styles.mainContainer}>
         <div className={styles.taskListContainer}>
-          <TaskList onEdit={handleEdit} reload={reloadTaskList} onReload={() => setReloadTaskList(false)} />
+          <TaskList onEdit={handleEdit} />
         </div>
         <div className={styles.formContainer}>
           <FormTask tarefa={selectedTask} onTaskUpdated={handleTaskUpdated} />

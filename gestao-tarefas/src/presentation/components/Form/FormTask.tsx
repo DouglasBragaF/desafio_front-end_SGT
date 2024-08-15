@@ -1,67 +1,10 @@
-import { useState, useEffect } from 'react';
 import styles from './FormTask.module.css';
-import { Tarefa } from '../../../domain/types/TarefaTypes';
-import { CreateTarefaType } from '../../../domain/types/CreateTarefaType';
-import { TarefaService } from '../../../application/services/TarefaService';
+import { InputField } from './InputField';
+import { TextareaField } from './TextareaField';
+import useFormTask from '../../../application/hooks/useFormTask';
 
-interface FormTaskProps {
-  tarefa?: Tarefa;
-  onTaskUpdated?: () => void;
-}
-
-const FormTask = ({ tarefa, onTaskUpdated }: FormTaskProps) => {
-  const [taskData, setTaskData] = useState<CreateTarefaType>({
-    titulo: tarefa?.titulo || '',
-    descricao: tarefa?.descricao || '',
-    dataVencimento: tarefa?.dataVencimento?.toString().substring(0, 10) || '',
-  });
-
-  useEffect(() => {
-    if (tarefa) {
-      setTaskData({
-        titulo: tarefa.titulo,
-        descricao: tarefa.descricao,
-        dataVencimento: tarefa.dataVencimento?.toString().substring(0, 10) || '',
-      });
-    }
-  }, [tarefa]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { id, value } = e.target;
-
-    setTaskData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    try {
-      if (tarefa) {
-        // Atualizar a tarefa existente
-        await TarefaService.update({ ...tarefa, ...taskData });
-        console.log('Tarefa atualizada:', taskData);
-        if (onTaskUpdated) {
-          onTaskUpdated();
-        }
-      } else {
-        // Criar uma nova tarefa
-        await TarefaService.create(taskData);
-        console.log('Tarefa registrada:', taskData);
-      }
-    } catch (error) {
-      console.error('Erro ao salvar a tarefa:', error);
-    }
-
-    // Redefine o formulário para registrar nova tarefa
-    setTaskData({
-      titulo: '',
-      descricao: '',
-      dataVencimento: '',
-    });
-  };
+const FormTask = ({ tarefa, onTaskUpdated }: { tarefa: any, onTaskUpdated: any }) => {
+  const { taskData, handleInputChange, handleSubmit } = useFormTask(tarefa, onTaskUpdated);
 
   return (
     <div className={styles.mainContainer}>
@@ -70,45 +13,30 @@ const FormTask = ({ tarefa, onTaskUpdated }: FormTaskProps) => {
           <h1>{tarefa ? 'Editar Tarefa' : 'Registrar Tarefa'}</h1>
         </div>
         <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.row}>
-            <div className={styles.col}>
-              <label htmlFor="titulo">Título</label>
-              <input
-                type="text"
-                id="titulo"
-                value={taskData.titulo}
-                onChange={handleInputChange}
-                className={styles.input}
-                maxLength={255}
-                required
-              />
-            </div>
-          </div>
-          <div className={styles.row}>
-            <div className={styles.col}>
-              <label htmlFor="descricao">Descrição</label>
-              <textarea
-                id="descricao"
-                value={taskData.descricao}
-                onChange={handleInputChange}
-                className={styles.input}
-                required
-              />
-            </div>
-          </div>
-          <div className={styles.row}>
-            <div className={styles.col}>
-              <label htmlFor="dataVencimento">Data de Vencimento</label>
-              <input
-                type="date"
-                id="dataVencimento"
-                value={taskData.dataVencimento}
-                onChange={handleInputChange}
-                className={`${styles.input} ${styles.data}`}
-                required
-              />
-            </div>
-          </div>
+          <InputField
+            id="titulo"
+            label="Título"
+            value={taskData.titulo}
+            onChange={handleInputChange}
+            maxLength={255}
+            required
+          />
+          <TextareaField
+            id="descricao"
+            label="Descrição"
+            value={taskData.descricao}
+            onChange={handleInputChange}
+            required
+          />
+          <InputField
+            id="dataVencimento"
+            label="Data de Vencimento"
+            value={taskData.dataVencimento}
+            onChange={handleInputChange}
+            type="date"
+            className={`${styles.input} ${styles.data}`}
+            required
+          />
           <div className={styles.botoes}>
             <button type="submit" className={styles.saveButton}>
               {tarefa ? 'Salvar Alterações' : 'Registrar'}
