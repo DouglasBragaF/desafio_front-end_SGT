@@ -6,9 +6,10 @@ import { TarefaService } from '../../../application/services/TarefaService';
 
 interface FormTaskProps {
   tarefa?: Tarefa; // Prop para receber a tarefa a ser editada
+  onTaskUpdated?: () => void; // Callback para quando a tarefa for atualizada
 }
 
-const FormTask: React.FC<FormTaskProps> = ({ tarefa }) => {
+const FormTask = ({ tarefa, onTaskUpdated }: FormTaskProps) => {
   const [taskData, setTaskData] = useState<CreateTarefaType>({
     titulo: tarefa?.titulo || '',
     descricao: tarefa?.descricao || '',
@@ -28,7 +29,7 @@ const FormTask: React.FC<FormTaskProps> = ({ tarefa }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
 
-    setTaskData((prevData: any) => ({
+    setTaskData((prevData) => ({
       ...prevData,
       [id]: value,
     }));
@@ -42,6 +43,9 @@ const FormTask: React.FC<FormTaskProps> = ({ tarefa }) => {
         // Atualizar a tarefa existente
         await TarefaService.update({ ...tarefa, ...taskData });
         console.log('Tarefa atualizada:', taskData);
+        if (onTaskUpdated) {
+          onTaskUpdated(); // Notifica o componente pai que a tarefa foi atualizada
+        }
       } else {
         // Criar uma nova tarefa
         await TarefaService.create(taskData);
@@ -51,6 +55,7 @@ const FormTask: React.FC<FormTaskProps> = ({ tarefa }) => {
       console.error('Erro ao salvar a tarefa:', error);
     }
 
+    // Redefine o formulário para registrar nova tarefa
     setTaskData({
       titulo: '',
       descricao: '',

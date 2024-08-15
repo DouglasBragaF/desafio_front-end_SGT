@@ -2,51 +2,62 @@ import { useState, useEffect } from 'react';
 import styles from './TaskList.module.css';
 import { StatusTarefa, Tarefa } from '../../../domain/types/TarefaTypes';
 import { TarefaService } from '../../../application/services/TarefaService';
+import { CreateTarefaType } from '../../../domain/types/CreateTarefaType';
 
 interface TaskListProps {
   onEdit: (tarefa: Tarefa) => void;
 }
 
-const TaskList = ({onEdit}: TaskListProps) => {
+const TaskList = ({ onEdit }: TaskListProps) => {
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchTarefas = async () => {
+    try {
+      const rawTarefas = await TarefaService.getAll();
+
+      const formattedTarefas = rawTarefas.map((tarefa: Tarefa) => ({
+        ...tarefa,
+        dataCriacao: new Date(tarefa.dataCriacao),
+        dataVencimento: tarefa.dataVencimento ? new Date(tarefa.dataVencimento) : undefined,
+        dataAlteracao: tarefa.dataAlteracao ? new Date(tarefa.dataAlteracao) : undefined,
+      }));
+
+      setTarefas(formattedTarefas);
+    } catch (error) {
+      console.error('Erro ao carregar as tarefas:', error);
+      setError('Erro ao carregar as tarefas');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchTarefas = async () => {
-      try {
-        const rawTarefas = await TarefaService.getAll();
-
-        const formattedTarefas = rawTarefas.map((tarefa: Tarefa) => ({
-          ...tarefa,
-          dataCriacao: new Date(tarefa.dataCriacao),
-          dataVencimento: tarefa.dataVencimento ? new Date(tarefa.dataVencimento) : undefined,
-          dataAlteracao: tarefa.dataAlteracao ? new Date(tarefa.dataAlteracao) : undefined,
-        }));
-
-        setTarefas(formattedTarefas);
-      } catch (error) {
-        console.error('Erro ao carregar as tarefas:', error);
-        setError('Erro ao carregar as tarefas');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchTarefas();
-  }, [tarefas]);
+  }, []);
 
   const handleStatusChange = async (id: number, newStatus: StatusTarefa) => {
     try {
-      // Atualiza o status da tarefa no backend
-      // await TarefaService.updateStatus(id, newStatus);
+      const tarefaToUpdate = tarefas.find(tarefa => tarefa.id === id);
 
-      // Atualiza o estado local após a atualização bem-sucedida
-      // setTarefas((prevTarefas) =>
-      //   prevTarefas.map((tarefa) =>
-      //     tarefa.id === id ? { ...tarefa, status: newStatus } : tarefa
-      //   )
-      // );
+      if (tarefaToUpdate) {
+        const updateData: CreateTarefaType = {
+          id: tarefaToUpdate.id!,
+          titulo: tarefaToUpdate.titulo,
+          descricao: tarefaToUpdate.descricao,
+          dataVencimento: tarefaToUpdate.dataVencimento
+            ? tarefaToUpdate.dataVencimento.toISOString().substring(0, 10)
+            : '', // Formatar a data para o formato YYYY-MM-DD
+          status: newStatus, // Aqui o status é atualizado
+        };
+
+        // Atualiza o status da tarefa no backend
+        await TarefaService.update(updateData);
+
+        // Faz um novo fetch das tarefas para atualizar a lista
+        fetchTarefas();
+      }
     } catch (error) {
       console.error('Erro ao atualizar o status da tarefa:', error);
       setError('Erro ao atualizar o status da tarefa');
@@ -57,13 +68,13 @@ const TaskList = ({onEdit}: TaskListProps) => {
     const tarefaToEdit = tarefas.find(tarefa => tarefa.id === id);
     if (tarefaToEdit) {
       onEdit(tarefaToEdit);
-    } 
-  }
+    }
+  };
 
   const handleDelete = async (id: number) => {
     try {
       await TarefaService.deleteTarefa(id);
-      setTarefas((prevTarefas) => prevTarefas.filter((tarefa) => tarefa.id !== id));
+      fetchTarefas();
       console.log(`Tarefa com id ${id} foi excluída.`);
     } catch (error) {
       console.error('Erro ao excluir a tarefa:', error);
