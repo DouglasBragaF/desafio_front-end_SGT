@@ -15,7 +15,6 @@ export const TarefaService = {
     }
   },
 
-
   async getAll() {
     try {
       const response = await apiClient.get("/Tarefa");

@@ -5,15 +5,15 @@ import { CreateTarefaType } from '../../../domain/types/CreateTarefaType';
 import { TarefaService } from '../../../application/services/TarefaService';
 
 interface FormTaskProps {
-  tarefa?: Tarefa; // Prop para receber a tarefa a ser editada
-  onTaskUpdated?: () => void; // Callback para quando a tarefa for atualizada
+  tarefa?: Tarefa;
+  onTaskUpdated?: () => void;
 }
 
 const FormTask = ({ tarefa, onTaskUpdated }: FormTaskProps) => {
   const [taskData, setTaskData] = useState<CreateTarefaType>({
     titulo: tarefa?.titulo || '',
     descricao: tarefa?.descricao || '',
-    dataVencimento: tarefa?.dataVencimento?.toString().substring(0, 10) || '', // Formatando a data para o input date
+    dataVencimento: tarefa?.dataVencimento?.toString().substring(0, 10) || '',
   });
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const FormTask = ({ tarefa, onTaskUpdated }: FormTaskProps) => {
         await TarefaService.update({ ...tarefa, ...taskData });
         console.log('Tarefa atualizada:', taskData);
         if (onTaskUpdated) {
-          onTaskUpdated(); // Notifica o componente pai que a tarefa foi atualizada
+          onTaskUpdated();
         }
       } else {
         // Criar uma nova tarefa
