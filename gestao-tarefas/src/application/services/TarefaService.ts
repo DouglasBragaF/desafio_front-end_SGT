@@ -26,21 +26,9 @@ export const TarefaService = {
     }
   },
 
-  async updateStatus(id: number, newStatus: number) {
-    try {
-      const response = await apiClient.put(`/Tarefa/${id}/status`, {
-        status: newStatus,
-      });
-      console.log("retorno apiClient put:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Erro ao atualizar o status da tarefa:", error);
-      throw error;
-    }
-  },
-
   async update(tarefa: CreateTarefaType) {
     try {
+      console.log("Atualizando tarefa:", tarefa);
       const response = await apiClient.put(`/Tarefa/${tarefa.id}`, tarefa);
       console.log("retorno apiClient put:", response.data);
       return response.data;

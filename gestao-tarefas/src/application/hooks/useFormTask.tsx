@@ -48,6 +48,8 @@ const useFormTask = (tarefa?: Tarefa, onTaskUpdated?: () => void) => {
       descricao: '',
       dataVencimento: '',
     });
+
+    window.location.reload();
   };
 
   return {
