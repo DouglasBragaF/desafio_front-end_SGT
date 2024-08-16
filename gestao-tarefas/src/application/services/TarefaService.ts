@@ -39,6 +39,7 @@ export const TarefaService = {
   },
 
   async deleteTarefa(id: number) {
+    console.log(`service Excluindo tarefa com id ${id}...`);
     try {
       const response = await apiClient.delete(`/Tarefa/${id}`);
       console.log("retorno apiClient delete:", response.status);

@@ -61,6 +61,7 @@ const useTaskList = () => {
   };
 
   const handleDelete = async (id: number) => {
+    console.log(`Excluindo tarefa com id ${id}...`);
     try {
       await TarefaService.deleteTarefa(id);
       fetchTarefas();
