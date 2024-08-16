@@ -8,7 +8,7 @@
 }
 
 .mainContainer {
-  border: 2px solid red;
+  /* border: 2px solid red; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -16,7 +16,7 @@
 }
 
 .taskListContainer {
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
   flex: 2;
   background-color: #f9f9f9;
   padding: 20px; 
@@ -24,7 +24,7 @@
 }
 
 .formContainer {
-  border: 2px solid green;
+  /* border: 2px solid green; */
   flex: 1;
   background-color: #ffffff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
